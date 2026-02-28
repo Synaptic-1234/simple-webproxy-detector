@@ -37,6 +37,19 @@ function checkForConfig(){
     return(configFiles);  
 }
 
+function checkForCookies(){
+    const cookies = [];
+    for (let key of Object.getOwnPropertyNames(window)) {
+        var temp = window[key];
+        if (typeof temp == 'string' ) {
+            if (key.endsWith("$cookies")){
+                cookies.push(key);
+            }
+        }
+    }
+    return(cookies);  
+}
+
 
 function checkForRewrite(){
     const rewrite = [];
@@ -78,6 +91,15 @@ function checkUV(){
         return true;
     }
   }
+  const cookies = checkForCookies();
+  for (i in cookies){
+    const currentCookies = cookies[i];
+    const contents = eval("window." + currentCookies);
+    if (currentCookies.startsWith("_")){
+        return true;
+    }
+  }
+
   if (window.__uv$config != undefined ){
    return true;
   }
